@@ -3,11 +3,15 @@ import java.util.*;
 
 public class A0116633 {
 	
-	private static double minimalI;
-	private static double minimalJ;
-	private static double value;
+	private static double[] iArray, jArray;
+	private static int globalCounter;
+	private static double minimalI, minimalJ, value;
 	
 	public static void main(String[] args) {
+		iArray = new double[25];
+		jArray = new double[25];
+		globalCounter = 0;
+		
 		Scanner sc = new Scanner(System.in);
 		String fileName = sc.next();
 		
@@ -29,7 +33,9 @@ public class A0116633 {
 			
 			while ((fileInput = br.readLine()) != null) {
 				fileInput = br.readLine();
-				calculateSum(fileInput);
+				calculateISum(fileInput);
+				calculateJSum(fileInput);
+				globalCounter++;
 			}
 			
 			String outputFileName = fileName + ".txt";
@@ -44,12 +50,38 @@ public class A0116633 {
 			fr.close();
 			br.close();
 			pw.close();
-        } catch(IOException e) { 
+        } catch(Exception e) { 
 			System.err.println(fileName + " does not exist!");
 		}
 	}
 	
-	public static void calculateSum(String fileInput) {
+	public static void calculateISum(String fileInput) {
+		double totalSum = 0.00;
 		
+		try {
+			for(int i = 0; i <= fileInput.length(); i = i + 4) {
+				String extractedNumber = fileInput.substring(i, i+3);
+				double number = Double.parseDouble(extractedNumber);
+				totalSum = totalSum + number;
+			}
+			
+			iArray[globalCounter] = totalSum;
+		} catch (Exception e) {
+			System.err.println("Error when reeading file!");
+		}
 	}
+	
+	public static void calculateJSum(String fileInput) {
+		double totalSum = 0.00;
+		
+		try {
+			for(int i = 0; i <= fileInput.length(); i = i + 4) {
+				String extractedNumber = fileInput.substring(i, i+3);
+				double number = Double.parseDouble(extractedNumber);	
+			}
+		} catch (Exception e) {
+			System.err.println("Error when reeading file!");
+		}
+	}
+	
 }
