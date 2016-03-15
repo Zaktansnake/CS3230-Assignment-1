@@ -9,9 +9,9 @@ public class A0116633 {
 	private static double value;
 	
 	public static void main(String[] args) {
-		inputArray = new double[25][25];
-		iArray = new double[25];
-		jArray = new double[25];
+		inputArray = new double[24][24];
+		iArray = new double[24];
+		jArray = new double[24];
 		globalCounterI = 0;
 		globalCounterJ = 0;
 		
@@ -41,12 +41,10 @@ public class A0116633 {
 				globalCounterI++;
 			}
 			
-			for(int i = 0 ; i <= 25; i++) {
-				minimalI = findMinimalI();
-				minimalJ = findMinimalJ();
-			}
-			
+			minimalI = findMinimal(iArray);
+			minimalJ = findMinimal(jArray);
 			value = inputArray[minimalI][minimalJ];
+			
 			String outputFileName = fileName + ".txt";
 			File outputFile = new File(outputFileName);
 			pw = new PrintWriter(outputFile);
@@ -91,29 +89,52 @@ public class A0116633 {
 				jArray[globalCounterJ] = jArray[globalCounterJ] + number;
 				globalCounterJ++;
 			}
+			
 			globalCounterJ = 0;
 		} catch (Exception e) {
 			System.err.println("Error when reading file!");
 		}
 	}
 	
-	public static int findMinimalI() {
+	public static int findMinimal(double[] array) {
+		double difference = 0.0;
+		double min = 1.0;
 		int minimal = 0;
 		
-		for(int i = 0; i <= 23; i++) {
+		for(int i = 0; i <= 22; i++) {
+			double front = calculateFrontSum(i, array);
+			double back = calculateBackSum(i+2, array);
 			
+			if(front < back) {
+				difference = back - front;
+			} else {
+				difference = front - back;
+			}
+			
+			if(difference < min) {
+				min = difference;
+				minimal = i;
+			} else {
+				continue;
+			}
 		}
 		
 		return minimal;
 	}
 	
-	public static int findMinimalJ() {
-		int minimal = 0;
-		
-		for(int i = 0; i <= 23; i++) {
-			
+	public static double calculateFrontSum(int index, double[] array) {
+		if(index == 0) {
+			return array[0];
+		} else {
+			return array[index] + calculateFrontSum(index-1, array);
 		}
-		
-		return minimal;
+	}
+	
+	public static double calculateBackSum(int index, double[] array) {
+		if(index == 24) {
+			return array[24];
+		} else {
+			return array[index] + calculateFrontSum(index+1, array);
+		}
 	}
 }
