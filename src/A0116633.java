@@ -1,26 +1,21 @@
 import java.io.*;
-import java.util.*;
 
 public class A0116633 {
 	
-	private static double[][] inputArray;
-	private static double[] iArray, jArray;
+	private static Double[][] inputArray;
+	private static Double[] iArray, jArray;
 	private static int globalCounterI, globalCounterJ, minimalI, minimalJ;
 	private static double value;
 	
 	public static void main(String[] args) {
-		inputArray = new double[24][24];
-		iArray = new double[24];
-		jArray = new double[24];
+		inputArray = new Double[25][25];
+		iArray = new Double[25];
+		jArray = new Double[25];
 		globalCounterI = 0;
 		globalCounterJ = 0;
 		
-		Scanner sc = new Scanner(System.in);
-		String fileName = sc.next();
-		
+		String fileName = args[0];
 		findCenter(fileName);
-		
-		sc.close();
 	}
 	
 	public static void findCenter(String fileName) {
@@ -58,7 +53,7 @@ public class A0116633 {
 			br.close();
 			pw.close();
         } catch(Exception e) { 
-			System.err.println(fileName + " does not exist!");
+			e.printStackTrace();
 		}
 	}
 	
@@ -66,37 +61,43 @@ public class A0116633 {
 		double totalSum = 0.00;
 		
 		try {
-			for(int i = 0; i <= fileInput.length(); i = i + 4) {
-				String extractedNumber = fileInput.substring(i, i+3);
-				double number = Double.parseDouble(extractedNumber);
+			for(int i = 0; i < fileInput.length(); i = i+5) {
+				String extractedNumber = fileInput.substring(i, i+4);
+				Double number = Double.parseDouble(extractedNumber);
 				inputArray[globalCounterI][globalCounterJ] = number;
 				globalCounterJ++;
 				totalSum = totalSum + number;
 			}
-			
+
 			globalCounterJ = 0;
 			iArray[globalCounterI] = totalSum;
+			System.out.println(globalCounterI + " " + iArray[globalCounterI]);
 		} catch (Exception e) {
-			System.err.println("Error when reading file!");
+			e.printStackTrace();
 		}
 	}
 	
 	public static void calculateJSum(String fileInput) {
 		try {
-			for(int i = 0; i <= fileInput.length(); i = i + 4) {
-				String extractedNumber = fileInput.substring(i, i+3);
-				double number = Double.parseDouble(extractedNumber);
-				jArray[globalCounterJ] = jArray[globalCounterJ] + number;
+			for(int i = 0; i < fileInput.length(); i = i+5) {
+				String extractedNumber = fileInput.substring(i, i+4);
+				Double number = Double.parseDouble(extractedNumber);
+				if(jArray[globalCounterJ] == null) {
+					jArray[globalCounterJ] = number;
+				} else {
+					jArray[globalCounterJ] = jArray[globalCounterJ] + number;
+				}
+				System.out.println(globalCounterJ + " " + jArray[globalCounterJ]);
 				globalCounterJ++;
 			}
 			
 			globalCounterJ = 0;
 		} catch (Exception e) {
-			System.err.println("Error when reading file!");
+			e.printStackTrace();
 		}
 	}
 	
-	public static int findMinimal(double[] array) {
+	public static int findMinimal(Double[] array) {
 		double difference = 0.0;
 		double min = 1.0;
 		int minimal = 0;
@@ -122,7 +123,7 @@ public class A0116633 {
 		return minimal;
 	}
 	
-	public static double calculateFrontSum(int index, double[] array) {
+	public static double calculateFrontSum(int index, Double[] array) {
 		if(index == 0) {
 			return array[0];
 		} else {
@@ -130,7 +131,7 @@ public class A0116633 {
 		}
 	}
 	
-	public static double calculateBackSum(int index, double[] array) {
+	public static double calculateBackSum(int index, Double[] array) {
 		if(index == 24) {
 			return array[24];
 		} else {
