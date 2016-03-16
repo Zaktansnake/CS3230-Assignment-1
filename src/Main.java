@@ -8,64 +8,58 @@ import java.util.*;
 public class Main {
 	
 	public static void main(String[] args) {
-		//2D array to store the 25 x 25 image
-		double[][] image = new double[25][25];
-		Scanner scan = new Scanner(System.in);
-		
-		//Stores the image values scanned into the 2d array
-		for(int i = 0 ; i < 25; i++) {
-			for(int j = 0; j < 25; j++) {
-				image[i][j] = scan.nextDouble();
-			}
-		} 
-		
-		findCenter(image);
-		scan.close();
-	}
-	
-	public static void findCenter(double[][] image) {
 		//To print the double value in the requested format
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
+		
+		//2D array to store the 25 x 25 image
+		double[][] image = new double[25][25];
 		
 		//Arrays to store the summation of each row and column
 		double[] rowsArray = new double[25];
 		double[] columnsArray = new double[25];
 		
-		//Calculates the sum of each row and stores the values in two arrays
-		for(int i = 0; i < 25; i++) {
+		Scanner scan = new Scanner(System.in);
+		
+		//Stores the image values scanned into the 2d array
+		//Calculates the sum of each row and stores the values in a array
+		for(int i = 0 ; i < 25; i++) {
 			for(int j = 0; j < 25; j++) {
+				image[i][j] = scan.nextDouble();
+				
 				if(j == 0) {
 					rowsArray[i] = image[i][j];
 				} else {
 					rowsArray[i] += image[i][j];
 				}
 			}
-		}
+		} 
 		
 		//Calculates the sum of each column and stores the values in two arrays
-		for(int j = 0; j < 25; j++) {
-			for(int i = 0; i < 25; i++) {
-				if(i == 0) {
-					columnsArray[j] = image[i][j];
+		for(int i = 0; i < 25; i++) {
+			for(int j = 0; j < 25; j++) {
+				if(j == 0) {
+					columnsArray[i] = image[j][i];
 				} else {
-					columnsArray[j] += image[i][j];
+					columnsArray[i] += image[j][i];
 				}
 			}
 		}
-		
+				
 		//Finds the row and column where the differences between sums are the absolute minimum
 		int minRow = findMinimum(rowsArray);
 		int minColumn = findMinimum(columnsArray);
-		
+				
 		//Retrieves the center position from the image array
 		double imageValue = image[minRow][minColumn];
-		
+				
 		//To get the correct center position of the value on the 25 x 25 image.
 		minRow += 1;
 		minColumn += 1;
-		
+				
 		//Prints out the center position and its image value to the user
 		System.out.print(minRow + " " + minColumn + " " + decimalFormat.format(imageValue));
+		
+		scan.close();
 	}
 	
 	public static int findMinimum(double[] sumArray) {
